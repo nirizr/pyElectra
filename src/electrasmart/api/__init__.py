@@ -25,8 +25,8 @@ class ElectraAPI(object):
         self,
         websession: ClientSession,
         imei: str | None = None,
-        phone_number: str | None = None,
         token: str | None = None,
+        phone_number: str | None = None,
     ) -> None:
         self._base_url = "https://app.ecpiot.co.il/mobile/mobilecommand"
         self._sid = None
@@ -63,7 +63,12 @@ class ElectraAPI(object):
 
         return json_resp
 
-    async def generate_new_token(self) -> dict[str, Any]:
+    async def generate_new_token(self, phone_number: str | None = None, imei: str | None = None) -> dict[str, Any]:
+        if phone_number:
+            self._phone_number = phone_number
+        if imei:
+            self._imei = imei
+
         payload = {
             "pvdid": 1,
             "id": 99,
@@ -74,7 +79,12 @@ class ElectraAPI(object):
         resp = await self._send_request(payload=payload)
         return resp
 
-    async def validate_one_time_password(self, otp: str) -> dict[str, Any]:
+    async def validate_one_time_password(self, otp: str, imei: str | None = None, phone_number: str | None = None) -> dict[str, Any]:
+        if phone_number:
+            self._phone_number = phone_number
+        if imei:
+            self._imei = imei
+
         payload = {
             "pvdid": 1,
             "id": 99,
