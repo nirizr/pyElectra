@@ -120,6 +120,10 @@ class ElectraAirConditioner(object):
         return self._oper_data["SHABAT"] == OperationMode.ON
 
     def update_operation_states(self, data: dict[str, Any]) -> None:
+        if not (data and data['commandJson'] and data['commandJson']['OPER']):
+            logger.debug(f"Skipping update_operation_states due to erronous response: {data}")
+            return
+
         self._oper_data = json.loads(data["commandJson"]["OPER"])["OPER"]
         self._time_delta = data["timeDelta"]
         measurments = json.loads(data["commandJson"]["DIAG_L2"])["DIAG_L2"]
