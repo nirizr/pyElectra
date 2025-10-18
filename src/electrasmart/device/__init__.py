@@ -1,9 +1,12 @@
+from logging import getLogger
 from __future__ import annotations
 
 import json
 from typing import Any
 
 from .const import Feature, OperationMode
+
+logger = getLogger(__name__)
 
 
 class ElectraAirConditioner(object):
